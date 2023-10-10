@@ -2,36 +2,52 @@ import styled from "styled-components"
 import { HiArrowLongRight, HiArrowLongLeft } from "react-icons/hi2"
 import { createArray } from "../Common/utils"
 import cardImage from "../../assets/images/pubg-background.jpg"
+import { useState } from "react"
 
+interface CardListProps {
+  $move: number
+}
 interface SwiperProps {
   totalPages: number
   totalItems: number
 }
 
 export const Swiper = ({ totalPages, totalItems }: SwiperProps) => {
+  const [move, setMove] = useState(0)
   const pages = createArray({ n: totalPages })
   const items = createArray({ n: totalItems })
+
+  function handleScrollNext() {
+    setMove((state) => (state !== totalPages ? state + 1 : state))
+  }
+  function handleScrollBack() {
+    setMove((state) => (state !== 0 ? state - 1 : state))
+  }
+
+  console.log(move)
 
   return (
     <SwiperContainer>
       <TitleWrapper>
         <SwiperTitle>Featured & Recommended</SwiperTitle>
         <NavigateWrapper>
-          <BackIcon />
-          <NextIcon />
+          <BackIcon onClick={() => handleScrollBack()} />
+          <NextIcon onClick={() => handleScrollNext()} />
         </NavigateWrapper>
       </TitleWrapper>
-      <CardList>
-        {items.map((index) => {
-          return (
-            <CardItem key={"card" + index}>
-              <CardImage src={cardImage} />
-            </CardItem>
-          )
-        })}
-      </CardList>
+      <CardContainer>
+        <CardList $move={move}>
+          {items.map((_, index) => {
+            return (
+              <CardItem key={"card" + index}>
+                <CardImage src={cardImage} />
+              </CardItem>
+            )
+          })}
+        </CardList>
+      </CardContainer>
       <Paginate>
-        {pages.map((index) => {
+        {pages.map((_, index) => {
           return <PaginateItem key={"page" + index} />
         })}
       </Paginate>
@@ -39,11 +55,17 @@ export const Swiper = ({ totalPages, totalItems }: SwiperProps) => {
   )
 }
 
-const CardList = styled.ul`
+const CardContainer = styled.div`
+  overflow: hidden;
+`
+
+const CardList = styled.ul.attrs<CardListProps>(({ $move }) => ({
+  style: {
+    transform: `translateX(-${$move * 224 + 16}px)`,
+  },
+}))`
   list-style: none;
   display: flex;
-  justify-content: center;
-  align-items: center;
 
   gap: 1em;
 
@@ -52,6 +74,13 @@ const CardList = styled.ul`
 
   overflow: auto;
   width: max-content;
+
+  &::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+  }
+
+  transition: 500ms;
 `
 
 const CardItem = styled.li`
@@ -60,11 +89,12 @@ const CardItem = styled.li`
 
   display: flex;
 
-  width: 14em;
+  min-width: 14em;
   height: 7em;
 
   border-radius: 0.25em;
 
+  user-select: none;
   cursor: pointer;
 `
 
