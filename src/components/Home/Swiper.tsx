@@ -1,30 +1,58 @@
 import styled from "styled-components"
 import { HiArrowLongRight, HiArrowLongLeft } from "react-icons/hi2"
 import { createArray } from "../Common/utils"
-import cardImage from "../../assets/images/pubg-background.jpg"
-import { useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 
+interface PaginateItemProps {
+  $active: boolean
+}
+interface CardContainerProps {
+  ref: object
+}
 interface CardListProps {
   $move: number
+  ref: object
 }
-interface SwiperProps {
-  totalPages: number
-  totalItems: number
+interface CardItemProps {
+  $active: boolean
+  onClick?: React.MouseEventHandler<HTMLElement>
 }
 
-export const Swiper = ({ totalPages, totalItems }: SwiperProps) => {
+interface SwiperProps {
+  list: {
+    title: string
+    fullPrice: number
+    price: number
+    salePorcent: number
+    src: string
+  }[]
+  active: number
+  setSwiperIndex: (swiperIndex: number) => void
+}
+
+export const Swiper = ({ active, list, setSwiperIndex }: SwiperProps) => {
   const [move, setMove] = useState(0)
-  const pages = createArray({ n: totalPages })
-  const items = createArray({ n: totalItems })
+  const [width, setWidth] = useState(0)
+  const CardListRef = useRef(null)
+  const CardContainerRef = useRef(null)
+  const totalPages = Math.round(width / 224)
+  const pages = createArray({ n: totalPages + 1 })
 
   function handleScrollNext() {
-    setMove((state) => (state !== totalPages ? state + 1 : state))
+    setMove((state) => (state < totalPages ? state + 1 : state))
   }
   function handleScrollBack() {
     setMove((state) => (state !== 0 ? state - 1 : state))
   }
 
-  console.log(move)
+  useLayoutEffect(() => {
+    CardListRef.current !== null &&
+      CardContainerRef.current !== null &&
+      setWidth(
+        CardListRef.current["offsetWidth"] -
+          CardContainerRef.current["offsetWidth"]
+      )
+  }, [])
 
   return (
     <SwiperContainer>
@@ -35,12 +63,18 @@ export const Swiper = ({ totalPages, totalItems }: SwiperProps) => {
           <NextIcon onClick={() => handleScrollNext()} />
         </NavigateWrapper>
       </TitleWrapper>
-      <CardContainer>
-        <CardList $move={move}>
-          {items.map((_, index) => {
+      <CardContainer ref={CardContainerRef}>
+        <CardList $move={move} ref={CardListRef}>
+          {list.map(({ src }, index) => {
             return (
-              <CardItem key={"card" + index}>
-                <CardImage src={cardImage} />
+              <CardItem
+                key={"card" + index}
+                $active={active === index}
+                onClick={() => {
+                  setSwiperIndex(index)
+                }}
+              >
+                <CardImage src={src} />
               </CardItem>
             )
           })}
@@ -48,20 +82,26 @@ export const Swiper = ({ totalPages, totalItems }: SwiperProps) => {
       </CardContainer>
       <Paginate>
         {pages.map((_, index) => {
-          return <PaginateItem key={"page" + index} />
+          return (
+            <PaginateItem
+              $active={move === index}
+              key={"page" + index}
+              onClick={() => setMove(index)}
+            />
+          )
         })}
       </Paginate>
     </SwiperContainer>
   )
 }
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<CardContainerProps>`
   overflow: hidden;
 `
 
 const CardList = styled.ul.attrs<CardListProps>(({ $move }) => ({
   style: {
-    transform: `translateX(-${$move * 224 + 16}px)`,
+    transform: `translateX(-${$move !== 0 ? $move * 224 + 16 : 0}px)`,
   },
 }))`
   list-style: none;
@@ -83,16 +123,21 @@ const CardList = styled.ul.attrs<CardListProps>(({ $move }) => ({
   transition: 500ms;
 `
 
-const CardItem = styled.li`
+const CardItem = styled.li.attrs<CardItemProps>(({ $active }) => ({
+  style: {
+    border: $active ? "1px solid white" : "",
+  },
+}))`
   position: relative;
   background-color: var(--color-home-navigation);
 
   display: flex;
 
-  min-width: 14em;
+  min-width: 224px;
   height: 7em;
 
   border-radius: 0.25em;
+  overflow: hidden;
 
   user-select: none;
   cursor: pointer;
@@ -123,7 +168,11 @@ const Paginate = styled.ul`
   margin: 0;
 `
 
-const PaginateItem = styled.li`
+const PaginateItem = styled.li.attrs<PaginateItemProps>(({ $active }) => ({
+  style: {
+    backgroundColor: $active ? "#fff" : "var(--color-home-navigation)",
+  },
+}))`
   background-color: var(--color-home-navigation);
   display: flex;
 
