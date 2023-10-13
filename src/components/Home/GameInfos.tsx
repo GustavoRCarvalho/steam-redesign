@@ -14,14 +14,20 @@ export const GameInfos = ({
   fullPrice,
   price,
 }: GameInfosProps) => {
+  const isFree = price === 0
+
   return (
     <Container>
       <Title>{title}</Title>
-      <PriceWrapper>
-        <SalePorcent>{salePorcent}% OFF</SalePorcent>
-        <FullPrice>R$ {fullPrice}</FullPrice>
-        <Price>R$ {price}</Price>
-      </PriceWrapper>
+      {isFree ? (
+        <FreePrice>FREE TO PLAY</FreePrice>
+      ) : (
+        <PriceWrapper>
+          <SalePorcent>{salePorcent}% OFF</SalePorcent>
+          <FullPrice>R$ {fullPrice}</FullPrice>
+          <Price>R$ {price}</Price>
+        </PriceWrapper>
+      )}
       <DownloadButton>
         <InstallIcon />
         Download Now
@@ -67,6 +73,11 @@ const PriceWrapper = styled.div`
   align-items: center;
 
   gap: 0.5em;
+`
+
+const FreePrice = styled.span`
+  display: flex;
+  font-weight: 500;
 `
 
 const Price = styled.span`

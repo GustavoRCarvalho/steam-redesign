@@ -1,49 +1,31 @@
 import styled from "styled-components"
-import pubgBackground from "../../assets/images/pubg-background.jpg"
-import cs2Background from "../../assets/images/cs2-background.jpg"
 import { ContentLimiter } from "../Common/ContentLimit"
 import { GameInfos } from "./GameInfos"
 import { Swiper } from "./Swiper"
 import { useState } from "react"
-
-const ListSwiper = [
-  {
-    title: "PUBG: Battlegrounds",
-    fullPrice: 100.0,
-    price: 30.0,
-    salePorcent: 70,
-    src: pubgBackground,
-  },
-  {
-    title: "Counter-Strike 2",
-    fullPrice: 100.0,
-    price: 60.0,
-    salePorcent: 40,
-    src: cs2Background,
-  },
-]
+import { HomeListSwiper } from "../../data/HomeSwiperList"
 
 export const Home = () => {
-  const [swiperIndex, setSwiperIndex] = useState(1)
+  const [swiperIndex, setSwiperIndex] = useState(0)
 
   return (
     <HomeContainer>
       <BackgroundContainer>
         <BackgroundImage
-          src={ListSwiper[swiperIndex].src}
+          src={HomeListSwiper[swiperIndex].src}
           title="Game Background"
         />
         <BackgroundFilter />
       </BackgroundContainer>
       <ContentLimiter>
         <GameInfos
-          title={ListSwiper[swiperIndex].title}
-          fullPrice={ListSwiper[swiperIndex].fullPrice}
-          price={ListSwiper[swiperIndex].price}
-          salePorcent={ListSwiper[swiperIndex].salePorcent}
+          title={HomeListSwiper[swiperIndex].title}
+          fullPrice={HomeListSwiper[swiperIndex].fullPrice}
+          price={HomeListSwiper[swiperIndex].price}
+          salePorcent={HomeListSwiper[swiperIndex].salePorcent}
         />
         <Swiper
-          list={ListSwiper}
+          list={HomeListSwiper}
           active={swiperIndex}
           setSwiperIndex={setSwiperIndex}
         />
