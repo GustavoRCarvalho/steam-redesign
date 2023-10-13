@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { HiArrowLongRight, HiArrowLongLeft } from "react-icons/hi2"
 import { createArray } from "../Common/utils"
 import { useLayoutEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 interface PaginateItemProps {
   $active: boolean
@@ -31,6 +32,7 @@ interface SwiperProps {
 }
 
 export const Swiper = ({ active, list, setSwiperIndex }: SwiperProps) => {
+  const { t } = useTranslation()
   const [move, setMove] = useState(0)
   const [width, setWidth] = useState(0)
   const CardListRef = useRef(null)
@@ -57,7 +59,7 @@ export const Swiper = ({ active, list, setSwiperIndex }: SwiperProps) => {
   return (
     <SwiperContainer>
       <TitleWrapper>
-        <SwiperTitle>Featured & Recommended</SwiperTitle>
+        <SwiperTitle>{t("Featured & Recommended")}</SwiperTitle>
         <NavigateWrapper>
           <BackIcon onClick={() => handleScrollBack()} />
           <NextIcon onClick={() => handleScrollNext()} />

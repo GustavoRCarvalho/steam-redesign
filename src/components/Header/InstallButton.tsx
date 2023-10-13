@@ -1,11 +1,13 @@
 import styled from "styled-components"
 import { HiArrowDownTray } from "react-icons/hi2"
+import { useTranslation } from "react-i18next"
 
 export const InstallButton = () => {
+  const { t } = useTranslation()
   return (
     <Button type="button">
       <InstallIcon />
-      Install Steam
+      {t("Install Steam")}
     </Button>
   )
 }

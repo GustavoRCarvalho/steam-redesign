@@ -2,9 +2,10 @@ import styled from "styled-components"
 import LogoSteam from "../../assets/images/steam-logo.png"
 import { ContentLimiter } from "../Common/ContentLimit"
 import { Logo } from "./Logo"
-import { Menu } from "./Menu"
+// import { Menu } from "./Menu"
 import { Search } from "./Search"
 import { InstallButton } from "./InstallButton"
+import { Language } from "./Language"
 
 export const Header = () => {
   return (
@@ -12,11 +13,12 @@ export const Header = () => {
       <HeaderLimiter>
         <HeaderWrapper>
           <Logo src={LogoSteam} title="Steam Logo" />
-          <Menu />
+          {/* <Menu /> */}
         </HeaderWrapper>
         <HeaderWrapper>
           <Search />
           <InstallButton />
+          <Language />
         </HeaderWrapper>
       </HeaderLimiter>
     </HeaderContainer>
@@ -35,6 +37,7 @@ const HeaderLimiter = styled(ContentLimiter)`
 
 const HeaderWrapper = styled.div`
   display: flex;
+  height: 100%;
 
   gap: 1em;
 `
@@ -42,7 +45,7 @@ const HeaderWrapper = styled.div`
 const HeaderContainer = styled.header`
   background-color: transparent;
 
-  position: sticky;
+  position: fixed;
   top: 0;
 
   width: 100vw;

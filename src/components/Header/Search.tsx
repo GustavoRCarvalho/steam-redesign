@@ -1,10 +1,13 @@
 import styled from "styled-components"
 import { FiSearch } from "react-icons/fi"
+import { useTranslation } from "react-i18next"
 
 export const Search = () => {
+  const { t } = useTranslation()
+
   return (
     <InputWrapper>
-      <Input placeholder="Search" />
+      <Input placeholder={t("Search")} />
       <SearchIcon />
     </InputWrapper>
   )
@@ -23,6 +26,8 @@ const InputWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   border-radius: 0.25em;
+
+  height: min-content;
 `
 
 const Input = styled.input`

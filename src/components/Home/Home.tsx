@@ -6,7 +6,7 @@ import { useState } from "react"
 import { HomeListSwiper } from "../../data/HomeSwiperList"
 
 export const Home = () => {
-  const [swiperIndex, setSwiperIndex] = useState(0)
+  const [swiperIndex, setSwiperIndex] = useState(1)
 
   return (
     <HomeContainer>

@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { HiArrowDownTray } from "react-icons/hi2"
+import { useTranslation } from "react-i18next"
 
 interface GameInfosProps {
   title: string
@@ -14,13 +15,14 @@ export const GameInfos = ({
   fullPrice,
   price,
 }: GameInfosProps) => {
+  const { t } = useTranslation()
   const isFree = price === 0
 
   return (
     <Container>
       <Title>{title}</Title>
       {isFree ? (
-        <FreePrice>FREE TO PLAY</FreePrice>
+        <FreePrice>{t("Free To Play")}</FreePrice>
       ) : (
         <PriceWrapper>
           <SalePorcent>{salePorcent}% OFF</SalePorcent>
@@ -30,7 +32,7 @@ export const GameInfos = ({
       )}
       <DownloadButton>
         <InstallIcon />
-        Download Now
+        {t("Download Now")}
       </DownloadButton>
     </Container>
   )
@@ -78,6 +80,8 @@ const PriceWrapper = styled.div`
 const FreePrice = styled.span`
   display: flex;
   font-weight: 500;
+
+  text-transform: uppercase;
 `
 
 const Price = styled.span`
