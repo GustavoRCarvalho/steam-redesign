@@ -68,6 +68,8 @@ const DropdownButton = styled.button`
   justify-content: center;
   align-items: center;
 
+  width: max-content;
+
   padding: 0.5em 1em;
 
   border: none;

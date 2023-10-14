@@ -5,3 +5,8 @@ export const Logo = styled.img`
 
   user-select: none;
 `
+export const LogoMobile = styled.img`
+  height: 2em;
+
+  user-select: none;
+`

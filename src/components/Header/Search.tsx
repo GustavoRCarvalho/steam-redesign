@@ -2,11 +2,15 @@ import styled from "styled-components"
 import { FiSearch } from "react-icons/fi"
 import { useTranslation } from "react-i18next"
 
-export const Search = () => {
+interface InputWrapperProps {
+  $fullWidth: boolean
+}
+
+export const Search = ({ fullWidth }: { fullWidth: boolean }) => {
   const { t } = useTranslation()
 
   return (
-    <InputWrapper>
+    <InputWrapper $fullWidth={fullWidth}>
       <Input placeholder={t("Search")} />
       <SearchIcon />
     </InputWrapper>
@@ -17,7 +21,7 @@ const SearchIcon = styled(FiSearch)`
   cursor: pointer;
 `
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<InputWrapperProps>`
   background-color: #0000006a;
 
   padding-inline: 0.75em;
@@ -26,6 +30,8 @@ const InputWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   border-radius: 0.25em;
+
+  width: ${(props) => (props.$fullWidth ? "calc(100% - 1.5em)" : "auto")};
 
   height: min-content;
 `
